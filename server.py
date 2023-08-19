@@ -10,7 +10,7 @@ client = pymongo.MongoClient("mongodb+srv://devw:devw123456@cluster0.vp7tf8d.mon
 db = client.get_database("note-database")
 note_collection = pymongo.collection.Collection(db, "note")
 
-def add_recipe(title, content, date):
+def add_notes(title, content, date):
     note = {"title": title, "content": content, "date": date}
     return note_collection.insert_one(note)
 
@@ -30,8 +30,8 @@ def api_get_notes():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@app.route('/editnote/<int:number>', methods=['GET'])
-def editnote(number):
+@app.route('/editnote/<int:id>')
+def editnote(id):
     return ""
 
 if __name__ == "__main__":
