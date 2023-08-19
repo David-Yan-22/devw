@@ -24,16 +24,16 @@ row_num = notes_col.find().count()
 
 
 # Add a new note
-def add_notes(title, content, date):
+def add_notes(title, content):
     global row_num
     row_num += 1
-    note = {"_id": row_num, "title": title, "content": content, "date": date}
+    note = {"_id": row_num, "title": title, "content": content, "date": datetime.now()}
     return notes_col.insert_one(note)
 
 @app.route('/addnote', methods=['POST'])
 def api_post_note():
     try:
-        add_notes(request.json.get('title'), request.json.get('content'), request.json.get('date'))
+        add_notes(request.json.get('title'), request.json.get('content'))
         return jsonify({'Success': "Yay"})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
