@@ -1,13 +1,12 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import React from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function editNote() {
   return (
     <div>
-        <h1>slfksjdlkfj</h1>
+    <h1>sadfsd</h1>
     </div>
   )
 }
