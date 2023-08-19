@@ -228,7 +228,7 @@ body{
 }
 
 .rectangle-container {
-
+  background-color: #ffffff;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the column width as needed */
   grid-gap: 30px; 
@@ -264,4 +264,10 @@ body{
   top: 35%;
   left: 40%;
   position: relative;
+}
+
+.desktop{
+  background-color: #ffffff;
+  height: 100%;
+  overflow-y: auto;
 }
