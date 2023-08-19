@@ -1,21 +1,29 @@
-from flask import Flask, request, jsonify
+# link: https://dev.to/kouul/frmp-stack-5g9
+
+from flask import Flask, redirect, url_for, jsonify, request
 import pymongo
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+import json
+from datetime import datetime
 from bson import json_util
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-# Connect the MongoDB 
-client = pymongo.MongoClient("mongodb+srv://devw:devw123456@cluster0.vp7tf8d.mongodb.net/?retryWrites=true&w=majority")
-db = client.get_database("note-database")
-note_collection = pymongo.collection.Collection(db, "note")
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+
+# Create a database called 'notes_db'
+db = client.get_database("notes_db")
+
+# Set up the collection of database fields (json objects)
+notes_col = db.get_collection("notes_col")
 
 
 # Add a new note
 def add_notes(title, content, date):
     note = {"title": title, "content": content, "date": date}
-    return note_collection.insert_one(note)
+    return notes_col.insert_one(note)
 
 @app.route('/addnote', methods=['POST'])
 def api_post_note():
@@ -24,20 +32,21 @@ def api_post_note():
         return jsonify({'Success': "Yay"})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+    
 
 # index page, list all notes
 @app.route('/listnotes', methods=['GET'])
 def api_get_notes():
     try:
-        note_data = note_collection.find()
+        note_data = notes_col.find()
         return json_util.dumps(note_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-
+    
 
 # Edit note
-@app.route('/editnote/<int:id>', methods=['POST', 'GET'])
-def editnote(id):
+@app.route('/editnote/<str:title>', methods=['POST', 'GET'])
+def editnote(title):
     if request.method == 'GET':
         return ""
     
