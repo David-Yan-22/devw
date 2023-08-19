@@ -7,36 +7,32 @@ app = Flask(__name__)
 CORS(app)
 
 client = pymongo.MongoClient("mongodb+srv://devw:devw123456@cluster0.vp7tf8d.mongodb.net/?retryWrites=true&w=majority")
-db = client.get_database("recipe-database")
-recipe_collection = pymongo.collection.Collection(db, "recipes")
+db = client.get_database("note-database")
+note_collection = pymongo.collection.Collection(db, "note")
 
-def add_recipe(name, ingredients, method):
-    recipe = {"name": name, "ingredients": ingredients, "method": method}
-    return recipe_collection.insert_one(recipe)
+def add_recipe(title, content, date):
+    note = {"title": title, "content": content, "date": date}
+    return note_collection.insert_one(note)
 
-@app.route('/addrecipe', methods=['POST'])
-def api_post_recipe():
+@app.route('/addnote', methods=['POST'])
+def api_post_note():
     try:
-        add_recipe(request.json.get('name'), request.json.get('ingredients'), request.json.get('method'))
+        add_recipe(request.json.get('title'), request.json.get('content'), request.json.get('date'))
         return jsonify({'Success': "Yay"})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@app.route('/listrecipes', methods=['GET'])
-def api_get_recipe():
+@app.route('/listnotes', methods=['GET'])
+def api_get_notes():
     try:
-        recipe_data = recipe_collection.find()
-        return json_util.dumps(recipe_data)
+        note_data = note_collection.find()
+        return json_util.dumps(note_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 400
-    
-@app.route('/deleterecipe', methods=['POST'])
-def api_post_deleterecipe():
-    try:
-        recipe_collection.delete_one(request.json)
-        return jsonify({'Success': "Yay"})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+
+@app.route('/editnote/<int:number>', methods=['GET'])
+def editnote(number):
+    return ""
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
