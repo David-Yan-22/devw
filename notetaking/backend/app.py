@@ -19,10 +19,15 @@ db = client.get_database("notes_db")
 # Set up the collection of database fields (json objects)
 notes_col = db.get_collection("notes_col")
 
+# Record the number of entities in DB (also use as id)
+row_num = notes_col.find().count()
+
 
 # Add a new note
 def add_notes(title, content, date):
-    note = {"title": title, "content": content, "date": date}
+    global row_num
+    row_num += 1
+    note = {"_id": row_num, "title": title, "content": content, "date": date}
     return notes_col.insert_one(note)
 
 @app.route('/addnote', methods=['POST'])
@@ -34,12 +39,12 @@ def api_post_note():
         return jsonify({'error': str(e)}), 400
     
 
-# index page, list all notes
-@app.route('/listnotes', methods=['GET'])
+# home page, list all notes
+@app.route('/home', methods=['GET'])
 def api_get_notes():
     try:
         note_data = notes_col.find()
-        
+
         # convert db format from python dic to JSON format
         return json_util.dumps(note_data)
     except Exception as e:
@@ -47,13 +52,32 @@ def api_get_notes():
     
 
 # Edit note
-@app.route('/editnote/<str:title>', methods=['POST', 'GET'])
-def editnote(title):
+@app.route('/editnote/<int:id>', methods=['POST', 'GET'])
+def editnote(id):
+
     if request.method == 'GET':
-        return ""
+        selected_note = notes_col.find({'_id':id})
+        for n in selected_note:
+            request.form['title'] = n['title']
+            request.form['content'] = n['content']
     
     if request.method == 'POST':
-        return ""
+        notes_col.update_one(
+            {'_id': id},
+            {
+                '$set':
+                {
+                    'title': request.form['title'],
+                    'content': request.form['content'],
+                    'date': datetime.now()
+                }
+            }
+        )
+
+        return redirect(url_for('home'))
+    
+    return "<h1>404 Not Found</h1>"
+
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=3000)
