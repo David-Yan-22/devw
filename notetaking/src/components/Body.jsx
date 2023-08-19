@@ -14,6 +14,7 @@ export default function Body() {
     >
       <div>
         <TextField
+          name="content"
           id="standard-multiline-static"
           label="Note Content"
           multiline

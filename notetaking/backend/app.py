@@ -39,6 +39,8 @@ def api_post_note():
 def api_get_notes():
     try:
         note_data = notes_col.find()
+        
+        # convert db format from python dic to JSON format
         return json_util.dumps(note_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 400
