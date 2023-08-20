@@ -20,7 +20,7 @@ db = client.get_database("notes_db")
 notes_col = db.get_collection("notes_col")
 
 # Record the number of entities in DB (also use as id)
-row_num = notes_col.find().count()
+row_num = notes_col.find()
 
 
 # Add a new note
