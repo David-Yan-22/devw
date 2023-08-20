@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {useEffect } from "react";
+import Link from "next/link";
 
 function Home() {
   const [recipes, setRecipes] = useState([{title: "notes",body:"XXX"}]);
@@ -14,46 +15,10 @@ function Home() {
   //get data from server
   const fetchRecipes = async () => {
     // fetch server from backend
-    //const response = await fetch("http://127.0.0.1:8000/home");
-    //const data = await response.json();
-
-    const data = [
-        {
-          title: "Assignments",
-          body: "Submit assignment to lms",
-        },
-        {
-          title: "To do",
-          body: "Get groceries, get new detergent",
-         },
-         {
-          title: "Shopping",
-          body: "Get groceries, get new detergent",
-         },
-         {
-          title: "deadlines",
-          body: "Get groceries, get new detergent",
-         },
-         {
-          title: "bucket list",
-          body: "Get groceries, get new detergent",
-         },
-         {
-          title: "travel",
-          body: "Get groceries, get new detergent",
-         },
-         {
-          title: "news",
-          body: "Get groceries, get new detergent",
-         },
-         {
-          title: "plans",
-          body: "Get groceries, get new detergent",
-         }
-       ];
-
+    const response = await fetch("http://127.0.0.1:3000/api/home");
+    const data = await response.json();
+    console.log(data);
     setRecipes(data);
-    console.log(data[0].title);
   };
 
 
@@ -107,7 +72,7 @@ function Home() {
 
         <div className="rectangle-container">
             {rectangles.map((rectangle, index) => (
-            <Link to="/editNote"><div 
+            <Link href="http://localhost:3000/editNote"><div 
                 key={index}
                 className="rectangle"
                 style={{
@@ -115,10 +80,9 @@ function Home() {
                 height: '227px',
                 backgroundColor: rectangle.color,
                 }}
-                href="/editNote"
             >
                 <img src="/icons/edit_icon.png"className="icon"/>
-                <div className="title">{recipes[index].title}</div>
+                <div className="title">{recipes[index]["title"]}</div>
             </div></Link>
             ))}
         </div>

@@ -25,6 +25,37 @@ notes_col = pymongo.collection.Collection(db, "notes_col")
 def add_notes(title,body):
     note = {"title": title, "body":body, "date": datetime.now()}
     return notes_col.insert_one(note)
+'''
+def try_add_note(id, title, content):
+    note = {"_id": id, "title": title, "content": content, "date": datetime.now()}
+    return notes_col.insert_one(note)
+
+def get_note():
+    try:
+        note_data = notes_col.find()
+        return json_util.dumps(note_data)
+    except Exception as e:
+        return jsonify({'error':str(e)}), 400
+
+try_add_note(1, "Assignments", "Submit to lms")
+'''
+
+allList = []
+
+def add_note(title, content):
+    allList.append({"title" : title,
+                    "body" : content})
+    return
+
+add_note("Assignments", "submit to lms")
+add_note("To Do", "Get groceries, get new detergent")
+add_note("Shopping", "Get groceries, get new detergent")
+add_note("Deadlines", "Get groceries, get new detergent")
+add_note("Bucket List", "Get groceries, get new detergent")
+add_note("Travel", "Get groceries, get new detergent")
+add_note("News", "Get groceries, get new detergent")
+add_note("Plans", "Get groceries, get new detergent")
+    
 
 @app.route('/addnote', methods=['POST', 'GET'])
 def api_post_note():
@@ -76,9 +107,9 @@ def editnote(id):
 
 @app.route('/api/home', methods=['GET'])
 def return_home():
-    return jsonify({
-        'message' : 'David'
-    })
+    return jsonify(
+        allList
+    )
 
 
 if __name__ == "__main__":
