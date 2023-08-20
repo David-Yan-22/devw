@@ -11,34 +11,29 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'body-Type'
 
+
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 
 # Create a database called 'notes_db'
 db = client.get_database("notes_db")
 
 # Set up the collection of database fields (json objects)
-notes_col = db.get_collection("notes_col")
-
-# Record the number of entities in DB (also use as id)
-row_num = notes_col.find()
+notes_col = pymongo.collection.Collection(db, "notes_col")
 
 
 # Add a new note
 def add_notes(title,body):
-    global row_num
-    row_num += 1
-    note = {"_id": row_num, "title": title, "body":body, "date": datetime.now()}
+    note = {"title": title, "body":body, "date": datetime.now()}
     return notes_col.insert_one(note)
 
-@app.route('/addnote', methods=['POST'])
+@app.route('/addnote', methods=['POST', 'GET'])
 def api_post_note():
-    try:
-        add_notes(request.json.get('title'), request.json.get('body'))
-        return jsonify({'Success': "Yay"})
-    except Exception as e:
-        global row_num
-        row_num -= 1
-        return jsonify({'error': str(e)}), 400
+    if request.method == 'POST':
+        try:
+            add_notes(request.json.get('title'), request.json.get('body'))
+            return jsonify({'Success': "Yay"})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
     
 
 # home page, list all notes
@@ -54,9 +49,8 @@ def api_get_notes():
     
 
 # Edit note
-@app.route('/editnote/<int:id>', methods=['POST', 'GET'])
+@app.route('/editNote/<int:id>', methods=['POST', 'GET'])
 def editnote(id):
-
     if request.method == 'GET':
         selected_note = notes_col.find({'_id':id})
         for n in selected_note:
@@ -85,6 +79,7 @@ def return_home():
     return jsonify({
         'message' : 'David'
     })
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
