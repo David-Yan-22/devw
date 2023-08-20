@@ -80,6 +80,11 @@ def editnote(id):
     
     return "<h1>404 Not Found</h1>"
 
+@app.route('/api/home', methods=['GET'])
+def return_home():
+    return jsonify({
+        'message' : 'David'
+    })
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
