@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import {useContext } from "react";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import {useEffect } from "react";
 
 function Home() {
     const [rectangles, setRectangles] = useState([]);
@@ -42,7 +41,7 @@ function Home() {
   return (
     <div className="desktop">
       <div className="div">
-        <div className="text-wrapper">Violet’s Notes</div>
+        <div className="text-wrapper">Violet's Notes</div>
 
 
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 50 50" fill="none" onClick={addRectangle}  className="add-note">
