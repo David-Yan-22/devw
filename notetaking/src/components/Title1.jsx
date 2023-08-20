@@ -9,7 +9,7 @@ export default function Title1() {
     <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 2, width: '35ch' },paddingLeft: '2%',
+        '& > :not(style)': { m: 2, width: '35ch' },paddingLeft: '20%',paddingTop:"5%"
       }}
       noValidate
       autoComplete="off"
