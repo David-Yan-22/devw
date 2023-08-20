@@ -36,6 +36,8 @@ def api_post_note():
         add_notes(request.json.get('title'), request.json.get('content'))
         return jsonify({'Success': "Yay"})
     except Exception as e:
+        global row_num
+        row_num -= 1
         return jsonify({'error': str(e)}), 400
     
 
