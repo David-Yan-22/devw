@@ -7,18 +7,19 @@ import json
 from datetime import datetime
 from bson import json_util
 
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'body-Type'
 
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+client = pymongo.MongoClient("mongodb+srv://devw:devw123456@cluster0.vp7tf8d.mongodb.net/?retryWrites=true&w=majority")
 
 # Create a database called 'notes_db'
-db = client.get_database("notes_db")
+db = client.get_database("flask_mongodb_recipes")
 
 # Set up the collection of database fields (json objects)
-notes_col = pymongo.collection.Collection(db, "notes_col")
+notes_col = pymongo.collection.Collection(db, "collection")
 
 
 # Add a new note
@@ -43,8 +44,11 @@ try_add_note(1, "Assignments", "Submit to lms")
 allList = []
 
 def add_note(title, content):
+    date = datetime.now()
+    notes_col.insert_one({"title" : title,
+                    "body" : content, "date":date})
     allList.append({"title" : title,
-                    "body" : content})
+                    "body" : content, "date":date})
     return
 
 add_note("Assignments", "submit to lms")
