@@ -9,7 +9,7 @@ from bson import json_util
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_HEADERS'] = 'body-Type'
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 
@@ -20,15 +20,19 @@ db = client.get_database("notes_db")
 notes_col = db.get_collection("notes_col")
 
 # Record the number of entities in DB (also use as id)
-#row_num = notes_col.find().count()
+<<<<<<< HEAD
+row_num = notes_col.find().count()
 
+=======
+row_num = notes_col.find()
+>>>>>>> 575a1fe8f57fb255871b644fbf1bdf148ec9064f
 
 
 # Add a new note
-def add_notes(title, content):
+def add_notes(title,body):
     global row_num
     row_num += 1
-    note = {"_id": row_num, "title": title, "content": content, "date": datetime.now()}
+    note = {"_id": row_num, "title": title, "body":body, "date": datetime.now()}
     return notes_col.insert_one(note)
 '''
 def try_add_note(id, title, content):
@@ -60,7 +64,7 @@ add_note("lol", "lol")
 @app.route('/addnote', methods=['POST'])
 def api_post_note():
     try:
-        add_notes(request.json.get('title'), request.json.get('content'))
+        add_notes(request.json.get('title'), request.json.get('body'))
         return jsonify({'Success': "Yay"})
     except Exception as e:
         global row_num
@@ -88,7 +92,7 @@ def editnote(id):
         selected_note = notes_col.find({'_id':id})
         for n in selected_note:
             request.form['title'] = n['title']
-            request.form['content'] = n['content']
+            request.form['body'] = n['body']
     
     if request.method == 'POST':
         notes_col.update_one(
@@ -97,7 +101,7 @@ def editnote(id):
                 '$set':
                 {
                     'title': request.form['title'],
-                    'content': request.form['content'],
+                    'body': request.form['body'],
                     'date': datetime.now()
                 }
             }

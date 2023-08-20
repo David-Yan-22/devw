@@ -271,3 +271,29 @@ body{
   height: 100%;
   overflow-y: auto;
 }
+
+.div4{
+  position: absolute;
+  left: 0;
+  padding-left: 20%
+}
+
+.div5{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top:2%;
+  padding-bottom: 5%;
+}
+
+.div6{
+  position: absolute;
+  right: 0;
+  padding-right: 31%;
+  padding-top: 2%;
+  padding-bottom: 5%;
+}
+
+.div7{
+  background-color: #ffffff;
+}

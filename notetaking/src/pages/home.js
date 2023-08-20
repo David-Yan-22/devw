@@ -2,6 +2,61 @@ import React, { useState } from "react";
 import {useEffect } from "react";
 
 function Home() {
+  const [recipes, setRecipes] = useState([{title: "notes",body:"XXX"}]);
+  const [count, setCount] = useState(0);
+
+  // By using this Hook, you tell React that your component needs to do something after render
+  useEffect(() => {
+    //this code will be run for first render
+    fetchRecipes();
+  }, []);
+
+  //get data from server
+  const fetchRecipes = async () => {
+    // fetch server from backend
+    //const response = await fetch("http://127.0.0.1:8000/home");
+    //const data = await response.json();
+
+    const data = [
+        {
+          title: "Assignments",
+          body: "Submit assignment to lms",
+        },
+        {
+          title: "To do",
+          body: "Get groceries, get new detergent",
+         },
+         {
+          title: "Shopping",
+          body: "Get groceries, get new detergent",
+         },
+         {
+          title: "deadlines",
+          body: "Get groceries, get new detergent",
+         },
+         {
+          title: "bucket list",
+          body: "Get groceries, get new detergent",
+         },
+         {
+          title: "travel",
+          body: "Get groceries, get new detergent",
+         },
+         {
+          title: "news",
+          body: "Get groceries, get new detergent",
+         },
+         {
+          title: "plans",
+          body: "Get groceries, get new detergent",
+         }
+       ];
+
+    setRecipes(data);
+    console.log(data[0].title);
+  };
+
+
     const [rectangles, setRectangles] = useState([]);
 
     const addRectangle = () => {
@@ -9,6 +64,8 @@ function Home() {
         color: generatePastelColor(),
       };
       setRectangles([...rectangles, newRectangle]);
+      setCount(count + 1);
+      console.log(count);
     };
 
     const generatePastelColor = () => {
@@ -50,7 +107,7 @@ function Home() {
 
         <div className="rectangle-container">
             {rectangles.map((rectangle, index) => (
-            <div 
+            <Link to="/editNote"><div 
                 key={index}
                 className="rectangle"
                 style={{
@@ -58,11 +115,11 @@ function Home() {
                 height: '227px',
                 backgroundColor: rectangle.color,
                 }}
+                href="/editNote"
             >
                 <img src="/icons/edit_icon.png"className="icon"/>
-                <div className="title">note</div>
-
-            </div>
+                <div className="title">{recipes[index].title}</div>
+            </div></Link>
             ))}
         </div>
 
