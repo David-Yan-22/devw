@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {useEffect } from "react";
+import Link from "next/link";
 
 function Home() {
   const [recipes, setRecipes] = useState([{title: "notes",body:"XXX"}]);
@@ -71,7 +72,7 @@ function Home() {
 
         <div className="rectangle-container">
             {rectangles.map((rectangle, index) => (
-            <div 
+            <Link href="http://localhost:3000/editNote"><div 
                 key={index}
                 className="rectangle"
                 style={{
@@ -82,7 +83,7 @@ function Home() {
             >
                 <img src="/icons/edit_icon.png"className="icon"/>
                 <div className="title">{recipes[index]["title"]}</div>
-            </div>
+            </div></Link>
             ))}
         </div>
 
