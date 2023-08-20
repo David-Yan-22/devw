@@ -57,8 +57,13 @@ def add_note(title, content):
     return
 
 add_note("Assignments", "submit to lms")
-add_note("enda", "something")
-add_note("lol", "lol")
+add_note("To Do", "Get groceries, get new detergent")
+add_note("Shopping", "Get groceries, get new detergent")
+add_note("Deadlines", "Get groceries, get new detergent")
+add_note("Bucket List", "Get groceries, get new detergent")
+add_note("Travel", "Get groceries, get new detergent")
+add_note("News", "Get groceries, get new detergent")
+add_note("Plans", "Get groceries, get new detergent")
     
 
 @app.route('/addnote', methods=['POST'])
